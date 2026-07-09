@@ -97,3 +97,9 @@ jobs:
         run: |
           echo "Ovaj workflow se izvršava samo na master grani"
           echo "Master branch"
+
+      - name: Commit have word deploy
+        if: contains(github.event.head_commit.message, 'deploy')
+        run: |
+          echo "Commit poruka sadrži riječ deploy"
+          echo "Poruka commita: ${{ github.event.head_commit.message }}"
