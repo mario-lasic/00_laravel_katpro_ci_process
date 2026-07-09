@@ -1,7 +1,11 @@
 name: Laravel CI process
+
 on:
   push:
-    branches: [ master release-candidate ]
+    branches:
+      - master
+      - release-candidate
+
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
