@@ -48,6 +48,14 @@ jobs:
           DB_DATABASE: ":memory:"
         run: php artisan migrate --force
 
+      - name: Fix storage permissions
+        run: |
+          mkdir -p storage/framework/views
+          mkdir -p storage/framework/cache
+          mkdir -p storage/logs
+          chmod -R 777 storage
+
+
       - name: Run PHPUnit tests
         env:
           DB_CONNECTION: sqlite
