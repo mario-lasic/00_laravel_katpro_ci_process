@@ -30,6 +30,8 @@ class ProfileTest extends TestCase
             ->patch('/profile', [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
+                'datum_rod' => '1994-12-09',
+                'placa' => 1900
             ]);
 
         $response
@@ -52,6 +54,8 @@ class ProfileTest extends TestCase
             ->patch('/profile', [
                 'name' => 'Test User',
                 'email' => $user->email,
+                'datum_rod' => '1994-12-09',
+                'placa' => 1900
             ]);
 
         $response
