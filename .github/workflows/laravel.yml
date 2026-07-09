@@ -1,7 +1,7 @@
 name: Laravel CI process
 on:
   push:
-    branches: [ master ]
+    branches: [ master release-candidate ]
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
@@ -103,3 +103,9 @@ jobs:
         run: |
           echo "Commit poruka sadrži riječ deploy"
           echo "Poruka commita: ${{ github.event.head_commit.message }}"
+
+      - name: Release candidate
+        if: github.ref == 'refs/heads/release-candidate'
+        run: |
+          echo "Ovaj workflow se izvršava samo na release-candidate grani"
+          echo "Ova grana se smatra pred-produkcijskom granom"
