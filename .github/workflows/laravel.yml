@@ -21,12 +21,17 @@ jobs:
           mkdir -p bootstrap/cache
           chmod -R 777 bootstrap/cache
 
-
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Install NPM dependencies
+        run: npm install
 
       - name: Copy .env
         run: cp .env.example .env
 
       - name: Generate application key
         run: php artisan key:generate
+
+      - name: Build Vite assets
+        run: npm run build
