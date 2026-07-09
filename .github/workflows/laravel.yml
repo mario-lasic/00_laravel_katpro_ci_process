@@ -16,6 +16,12 @@ jobs:
           extensions: mbstring, dom, fileinfo, sqlite3, pdo_sqlite
           coverage: none
 
+      - name: Fix Laravel cache directory
+        run: |
+          mkdir -p bootstrap/cache
+          chmod -R 777 bootstrap/cache
+
+
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
