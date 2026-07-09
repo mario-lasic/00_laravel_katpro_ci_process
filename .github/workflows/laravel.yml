@@ -40,4 +40,7 @@ jobs:
         run: php artisan --version
 
       - name: Clean Laravel cache
-        run: php artisan optimize:clear
+        run: php artisan cache:clear
+
+      - name: List of routes
+        run: php artisan route:list
