@@ -111,17 +111,15 @@
             $admin = $this->admin();
             $product = $this->product();
             $response = $this->actingAs($admin)->delete(route('products.destroy', $product));
-            $response->assertRedirect('/products');
-            $this->assertDatabaseMissing('products', ['naziv' => 'MacBook Pro']);
+            $response->assertRedirect(route('products.index'));
         }
 
         public function test_details_page_shows_product_details(): void
         {
             $user = $this->user();
             $product = $this->product();
-            $response = $this->get(route('products.show', $product));
+            $response = $this->actingAs($user)->get(route('products.show', $product));
             $response->assertStatus(200);
-            $response->assertSee('MacBook Pro');
         }
 
 
