@@ -39,8 +39,8 @@ jobs:
       - name: Verify Laravel application
         run: php artisan --version
 
-      - name: Clean Laravel cache
-        run: php artisan cache:clear
+#      - name: Clean Laravel cache
+#        run: php artisan optimize:clear
 
       - name: List of routes
         run: php artisan route:list
