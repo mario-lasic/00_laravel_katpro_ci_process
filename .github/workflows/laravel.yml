@@ -13,6 +13,11 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
+      - name: Build start
+        run: |
+          echo "BUILD STARTED"
+          echo "Datum početka: $(date '+%d-%m-%Y %H:%M:%S')":
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -113,3 +118,8 @@ jobs:
         run: |
           echo "Ovaj workflow se izvršava samo na release-candidate grani"
           echo "Ova grana se smatra pred-produkcijskom granom"
+
+      - name: Build ended
+        run: |
+          echo "BUILD ENDED"
+          echo "Datum Kraja: $(date '+%d-%m-%Y %H:%M:%S')":
