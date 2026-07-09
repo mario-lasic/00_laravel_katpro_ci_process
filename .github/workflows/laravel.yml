@@ -69,3 +69,23 @@ jobs:
           echo "=======CI PASSED=============="
           echo "=======SPREMNO ZA DEPLOY======"
           echo "=============================="
+
+      - name: CI Failed
+        if: failure()
+        run: |
+          echo "=============================="
+          echo "=======CI FAILED=============="
+          echo "=============================="
+
+      - name: Finished statistic
+        if: always()
+        run: |
+          echo "=============================="
+          echo "Laravel CI process finished"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commiter: ${{ github.actor }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Workspaces: ${{ github.workspace }}"
+          echo "Date: $(date '+%d-%m-%Y %H:%i:%s')"
+          echo "=============================="
