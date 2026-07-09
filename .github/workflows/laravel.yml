@@ -39,9 +39,6 @@ jobs:
       - name: Verify Laravel application
         run: php artisan --version
 
-#      - name: Clean Laravel cache
-#        run: php artisan optimize:clear
-
       - name: List of routes
         run: php artisan route:list
 
@@ -50,3 +47,6 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
         run: php artisan migrate --force
+
+      - name: Clean Laravel cache
+        run: php artisan optimize:clear
