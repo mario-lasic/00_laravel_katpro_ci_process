@@ -44,3 +44,9 @@ jobs:
 
       - name: List of routes
         run: php artisan route:list
+
+      - name: Run database migrations
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: php artisan migrate --force
