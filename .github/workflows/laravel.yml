@@ -87,5 +87,13 @@ jobs:
           echo "Commiter: ${{ github.actor }}"
           echo "Commit SHA: ${{ github.sha }}"
           echo "Workspaces: ${{ github.workspace }}"
-          echo "Date: $(date '+%d-%m-%Y %H:%i:%s')"
+          echo "Date: $(date '+%d-%m-%Y %H:%M:%S')"
           echo "=============================="
+
+
+
+      - name: Production head
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo "Ovaj workflow se izvršava samo na master grani"
+          echo "Master branch"
