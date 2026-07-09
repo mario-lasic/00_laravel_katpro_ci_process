@@ -48,4 +48,8 @@ jobs:
           DB_DATABASE: ":memory:"
         run: php artisan migrate --force
 
-
+      - name: Run PHPUnit tests
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: php artisan test
