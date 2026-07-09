@@ -1,0 +1,124 @@
+name: Laravel CI process
+
+on:
+  push:
+    branches:
+      - release-candidate
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Build start RC
+        run: |
+          echo "BUILD STARTED"
+          echo "Datum početka: $(date '+%d-%m-%Y %H:%M:%S')":
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: mbstring, dom, fileinfo, sqlite3, pdo_sqlite
+          coverage: none
+
+      - name: Fix Laravel cache directory
+        run: |
+          mkdir -p bootstrap/cache
+          chmod -R 777 bootstrap/cache
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Copy .env
+        run: cp .env.example .env
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+      - name: Build Vite assets
+        run: npm run build
+
+      - name: Verify Laravel application
+        run: php artisan --version
+
+      - name: List of routes
+        run: php artisan route:list
+
+      - name: Run database migrations
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: php artisan migrate --force
+
+      - name: Fix storage permissions
+        run: |
+          mkdir -p storage/framework/views
+          mkdir -p storage/framework/cache
+          mkdir -p storage/logs
+          chmod -R 777 storage
+
+
+      - name: Run PHPUnit tests
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: php artisan test
+
+      - name: CI uspješan
+        if: success()
+        run: |
+          echo "=============================="
+          echo "=======CI PASSED=============="
+          echo "=======SPREMNO ZA DEPLOY======"
+          echo "=============================="
+
+      - name: CI Failed
+        if: failure()
+        run: |
+          echo "=============================="
+          echo "=======CI FAILED=============="
+          echo "=============================="
+
+      - name: Finished statistic
+        if: always()
+        run: |
+          echo "=============================="
+          echo "Laravel CI process finished"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commiter: ${{ github.actor }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Workspaces: ${{ github.workspace }}"
+          echo "Date: $(date '+%d-%m-%Y %H:%M:%S')"
+          echo "=============================="
+
+
+
+      - name: Production head
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo "Ovaj workflow se izvršava samo na master grani"
+          echo "Master branch"
+
+      - name: Commit have word deploy
+        if: contains(github.event.head_commit.message, 'deploy')
+        run: |
+          echo "Commit poruka sadrži riječ deploy"
+          echo "Poruka commita: ${{ github.event.head_commit.message }}"
+
+      - name: Release candidate
+        if: github.ref == 'refs/heads/release-candidate'
+        run: |
+          echo "Ovaj workflow se izvršava samo na release-candidate grani"
+          echo "Ova grana se smatra pred-produkcijskom granom"
+
+      - name: Build ended
+        run: |
+          echo "BUILD ENDED"
+          echo "Datum Kraja: $(date '+%d-%m-%Y %H:%M:%S')":
