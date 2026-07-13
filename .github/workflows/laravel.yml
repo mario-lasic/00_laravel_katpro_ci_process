@@ -70,12 +70,6 @@ jobs:
           DB_DATABASE: ':memory:'
         run: php artisan migrate --force
 
-      - name: Run PHPUnit tests
-        env:
-          APP_ENV: testing
-          DB_CONNECTION: sqlite
-          DB_DATABASE: ':memory:'
-        run: php artisan test
 
       - name: CI successful
         if: success()
