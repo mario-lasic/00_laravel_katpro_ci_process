@@ -6,46 +6,124 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800"/>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex sm:items-center sm:space-x-6">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @can('admin-access')
-                        <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
-                            {{ __('Korisnici') }}
-                        </x-nav-link>
-                        <x-nav-link href="{{ route('admin.users.index-paginated') }}" :active="request()->routeIs('admin.users.index-paginated')">
-                            {{ __('Korisnici paginated') }}
-                        </x-nav-link>
+                        <div x-data="{openUsers:false}" class="relative">
+                            <button type="button" @click="openUsers = ! openUsers" @click.away="openUsers=false"
+                                    class="inline-flex items-center px-1 pt-1 text-xs font-medium leading-5 text-gray-500 hover:text-gray-700 focus:outline-none transition">
+                                Korisnici
+                                <i class="bi bi-chevron-down ms-1 text-[10px]"></i>
+                            </button>
+                            <div x-show="openUsers"
+                            x-transition class="absolute z-50 mt-2 w-56 rounded-md bg-white shadow-lg border border-gray-100"
+                            style="display:none;">
+                                <div class="py-1">
+                                    <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                                        Popis korisnika
+                                    </a>
+                                </div>
+                                <div class="py-1">
+                                    <a href="{{ route('admin.users.index-paginated') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                                        Popis korisnika paginated
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     @endcan
-                    <x-nav-link href="{{ route('categories.index') }}" :active="request()->routeIs('categories.index')">
-                        {{ __('Kategorije') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('categories.db') }}" :active="request()->routeIs('categories.db')">
-                        {{ __('Kategorije') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.index')">
-                        {{ __('Products') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('products.db') }}" :active="request()->routeIs('products.db')">
-                        {{ __('Products DB') }}
-                    </x-nav-link>
+{{--                    @can('admin-access')--}}
+{{--                        <x-nav-link href="{{ route('admin.users.index') }}"--}}
+{{--                                    :active="request()->routeIs('admin.users.index')">--}}
+{{--                            {{ __('Korisnici') }}--}}
+{{--                        </x-nav-link>--}}
+{{--                        <x-nav-link href="{{ route('admin.users.index-paginated') }}"--}}
+{{--                                    :active="request()->routeIs('admin.users.index-paginated')">--}}
+{{--                            {{ __('Korisnici paginated') }}--}}
+{{--                        </x-nav-link>--}}
+{{--                    @endcan--}}
+                    <div x-data="{openUsers:false}" class="relative">
+                        <button type="button" @click="openUsers = ! openUsers" @click.away="openUsers=false"
+                                class="inline-flex items-center px-1 pt-1 text-xs font-medium leading-5 text-gray-500 hover:text-gray-700 focus:outline-none transition">
+                            Kategorije
+                            <i class="bi bi-chevron-down ms-1 text-[10px]"></i>
+                        </button>
+                        <div x-show="openUsers"
+                             x-transition class="absolute z-50 mt-2 w-56 rounded-md bg-white shadow-lg border border-gray-100"
+                             style="display:none;">
+                            <div class="py-1">
+                                <a href="{{ route('categories.index') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                                    Popis kategorija
+                                </a>
+                            </div>
+                            <div class="py-1">
+                                <a href="{{ route('categories.db') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                                    Popis kategorija db
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+{{--                    <x-nav-link href="{{ route('categories.index') }}" :active="request()->routeIs('categories.index')">--}}
+{{--                        {{ __('Kategorije') }}--}}
+{{--                    </x-nav-link>--}}
+{{--                    <x-nav-link href="{{ route('categories.db') }}" :active="request()->routeIs('categories.db')">--}}
+{{--                        {{ __('Kategorije') }}--}}
+{{--                    </x-nav-link>--}}
+                    <div x-data="{openUsers:false}" class="relative">
+                        <button type="button" @click="openUsers = ! openUsers" @click.away="openUsers=false"
+                                class="inline-flex items-center px-1 pt-1 text-xs font-medium leading-5 text-gray-500 hover:text-gray-700 focus:outline-none transition">
+                            Products
+                            <i class="bi bi-chevron-down ms-1 text-[10px]"></i>
+                        </button>
+                        <div x-show="openUsers"
+                             x-transition class="absolute z-50 mt-2 w-56 rounded-md bg-white shadow-lg border border-gray-100"
+                             style="display:none;">
+                            <div class="py-1">
+                                <a href="{{ route('products.index') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                                    Popis Proizvoda
+                                </a>
+                            </div>
+                            <div class="py-1">
+                                <a href="{{ route('products.db') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                                    Popis Proizvoda db
+                                </a>
+                            </div>
+                            <div class="py-1">
+                                <a href="{{ route('products.search') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                                    Proizvodi search
+                                </a>
+                            </div>
+                            <div class="py-1">
+                                <a href="{{ route('dummy.products') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                                    Popis Dummy produtcs
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+{{--                    <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.index')">--}}
+{{--                        {{ __('Products') }}--}}
+{{--                    </x-nav-link>--}}
+{{--                    <x-nav-link href="{{ route('products.db') }}" :active="request()->routeIs('products.db')">--}}
+{{--                        {{ __('Products DB') }}--}}
+{{--                    </x-nav-link>--}}
 
-                    <x-nav-link href="{{ route('products.search') }}" :active="request()->routeIs('products.search')">
-                        {{ __('Products search') }}
-                    </x-nav-link>
+{{--                    <x-nav-link href="{{ route('products.search') }}" :active="request()->routeIs('products.search')">--}}
+{{--                        {{ __('Products search') }}--}}
+{{--                    </x-nav-link>--}}
 
 
-                    <x-nav-link href="{{ route('dummy.products') }}" :active="request()->routeIs('dummy.products')">
-                        {{ __('Dummy Products search') }}
-                    </x-nav-link>
+{{--                    <x-nav-link href="{{ route('dummy.products') }}" :active="request()->routeIs('dummy.products')">--}}
+{{--                        {{ __('Dummy Products search') }}--}}
+{{--                    </x-nav-link>--}}
 
-                    <x-nav-link href="{{ route('countries.product') }}" :active="request()->routeIs('countries.product')">
+                    <x-nav-link href="{{ route('countries.product') }}"
+                                :active="request()->routeIs('countries.product')">
                         {{ __('Countries and Products') }}
                     </x-nav-link>
 
@@ -56,12 +134,16 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                        <button
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                     viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                          clip-rule="evenodd"/>
                                 </svg>
                             </div>
                         </button>
@@ -77,7 +159,7 @@
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                                             onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
@@ -88,10 +170,14 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button @click="open = ! open"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
+                              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"/>
+                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
@@ -123,7 +209,7 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                                           onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>

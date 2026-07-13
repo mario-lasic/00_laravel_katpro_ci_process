@@ -55,11 +55,13 @@ jobs:
           php artisan route:clear
           php artisan view:clear
 
-      - name: Cache Laravel configuration and views
+      - name: Clear cached configuration
         run: |
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
+          rm -f bootstrap/cache/config.php
+          php artisan config:clear
+
+#      - name: Run tests
+#        run: php artisan test
 
       - name: List routes
         run: php artisan route:list
@@ -104,6 +106,8 @@ jobs:
         run: |
           echo "Ovaj workflow se izvršava na master grani."
           echo "Master branch"
+
+
 
       - name: Commit contains deploy
         if: contains(github.event.head_commit.message, 'deploy')
