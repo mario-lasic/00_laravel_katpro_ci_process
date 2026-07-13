@@ -9,9 +9,7 @@
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800"/>
                     </a>
                 </div>
-                @php
-                    $projectName = basename(base_path());
-                @endphp
+
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex sm:items-center sm:space-x-6">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -183,14 +181,6 @@
                     </svg>
                 </button>
             </div>
-        </div>
-        <div class="hidden sm:flex sm:items-center mr-6">
-            <span class="text-xs text-gray-500">
-                Projekt:
-                <span class="font-semibold text-gray-700">
-                    {{ $projectName }}
-                </span>
-            </span>
         </div>
     </div>
 
