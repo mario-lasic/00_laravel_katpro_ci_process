@@ -14,7 +14,14 @@
                 <span class="hidden sm:inline">
                     — Sva prava pridržana.
                 </span>
+                <span class="ml-10">
+                    Vrijeme učitavanja:
+                    <span class="font-semibold text-gray-700">
+                        {{ now()->format('H:i:s') }}
+                    </span>
+                </span>
             </div>
+
 
             <div class="text-xs text-gray-500">
                 Administracijska nadzorna ploča
