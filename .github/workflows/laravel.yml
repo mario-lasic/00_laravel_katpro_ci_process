@@ -1,10 +1,14 @@
 name: Laravel CI process
+
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -12,33 +16,32 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: '8.3'
           extensions: mbstring, dom, fileinfo, sqlite3, pdo_sqlite
           coverage: none
 
-      - name: Fix storage permissions
+      - name: Create Laravel directories
         run: |
+          mkdir -p storage/framework/cache/data
+          mkdir -p storage/framework/sessions
           mkdir -p storage/framework/views
-          mkdir -p storage/framework/cache
           mkdir -p storage/logs
-          chmod -R 777 storage
-
-      - name: Fix Laravel cache directory
-        run: |
           mkdir -p bootstrap/cache
-          chmod -R 777 bootstrap/cache
+
+          chmod -R 775 storage
+          chmod -R 775 bootstrap/cache
+
+      - name: Copy environment file
+        run: cp .env.example .env
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      - name: Install NPM dependencies
-        run: npm install
-
-      - name: Copy .env
-        run: cp .env.example .env
-
       - name: Generate application key
         run: php artisan key:generate
+
+      - name: Install NPM dependencies
+        run: npm ci
 
       - name: Build Vite assets
         run: npm run build
@@ -46,63 +49,72 @@ jobs:
       - name: Verify Laravel application
         run: php artisan --version
 
-      - name: List of routes
+      - name: Clear Laravel caches
+        run: |
+          php artisan config:clear
+          php artisan route:clear
+          php artisan view:clear
+          php artisan cache:clear
+
+      - name: Cache Laravel configuration and views
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      - name: List routes
         run: php artisan route:list
 
       - name: Run database migrations
         env:
           DB_CONNECTION: sqlite
-          DB_DATABASE: ":memory:"
+          DB_DATABASE: ':memory:'
         run: php artisan migrate --force
-
-
-
 
       - name: Run PHPUnit tests
         env:
+          APP_ENV: testing
           DB_CONNECTION: sqlite
-          DB_DATABASE: ":memory:"
+          DB_DATABASE: ':memory:'
         run: php artisan test
 
-      - name: CI uspješan
+      - name: CI successful
         if: success()
         run: |
           echo "=============================="
-          echo "=======CI PASSED=============="
-          echo "=======SPREMNO ZA DEPLOY======"
+          echo "======= CI PASSED ============="
+          echo "======= READY TO DEPLOY ========"
           echo "=============================="
 
-      - name: CI Failed
+      - name: CI failed
         if: failure()
         run: |
           echo "=============================="
-          echo "=======CI FAILED=============="
+          echo "======= CI FAILED ============="
           echo "=============================="
 
-      - name: Finished statistic
+      - name: Finished statistics
         if: always()
         run: |
           echo "=============================="
           echo "Laravel CI process finished"
           echo "Repository: ${{ github.repository }}"
           echo "Branch: ${{ github.ref_name }}"
-          echo "Commiter: ${{ github.actor }}"
+          echo "Committer: ${{ github.actor }}"
           echo "Commit SHA: ${{ github.sha }}"
-          echo "Workspaces: ${{ github.workspace }}"
+          echo "Workspace: ${{ github.workspace }}"
           echo "Date: $(date '+%d-%m-%Y %H:%M:%S')"
           echo "=============================="
 
-
-
-      - name: Production head
+      - name: Production branch
         if: github.ref == 'refs/heads/master'
         run: |
-          echo "Ovaj workflow se izvršava samo na master grani"
+          echo "Ovaj workflow se izvršava na master grani."
           echo "Master branch"
 
-      - name: Commit have word deploy
+      - name: Commit contains deploy
         if: contains(github.event.head_commit.message, 'deploy')
         run: |
-          echo "Commit poruka sadrži riječ deploy"
+          echo "Commit poruka sadrži riječ deploy."
           echo "Poruka commita: ${{ github.event.head_commit.message }}"
-          echo "Test prije CDa"
+          echo "Test prije CD-a"
