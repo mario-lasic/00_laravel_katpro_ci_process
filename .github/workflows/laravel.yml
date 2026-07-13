@@ -35,7 +35,11 @@ jobs:
         run: cp .env.example .env
 
       - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        env:
+          COMPOSER_PROCESS_TIMEOUT: 900
+          COMPOSER_MEMORY_LIMIT: -1
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress -vvv
 
       - name: Generate application key
         run: php artisan key:generate
