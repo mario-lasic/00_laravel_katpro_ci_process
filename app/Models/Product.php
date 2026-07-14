@@ -6,7 +6,7 @@
 
     class Product extends Model
     {
-        protected $fillable = ['category_id', 'naziv', 'opis', 'cijena', 'kolicina', 'izvor'];
+        protected $fillable = ['category_id', 'naziv', 'opis', 'cijena', 'kolicina', 'izvor', 'slika'];
 
         public function category()
         {

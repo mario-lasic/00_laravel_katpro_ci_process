@@ -34,14 +34,24 @@
                         </tr>
                         <td>Količina</td>
                             <td>{{ $product->kolicina }}</td>
-                        </tr>                                                                            
+                        </tr>
                         <td>Kreiran</td>
                             <td>{{ $product->created_at?->format('d.m.Y H:i:s')}}</td>
                         </tr>
                         <td>Ažuriran</td>
                             <td>{{ $product->updated_at?->format('d.m.Y H:i:s')}}</td>
-                        </tr>                                                                    
+                        </tr>
                     </table>
+                    @if($product->slika)
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-lg mb-3"></h3>
+                            <img src="{{ asset('storage/'.$product->slika) }}" class="max-h-80 rounded-lg border border-gray-300 shadow">
+                        </div>
+                    @else
+                        <div>
+                            <h3 class="font-semibold text-lg mb-3">Nema slike za proizvod</h3>
+                        </div>
+                    @endif
                     <div class="mt-6 flex gap-4">
                         <a href="{{ route('products.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded">
                             Povratak

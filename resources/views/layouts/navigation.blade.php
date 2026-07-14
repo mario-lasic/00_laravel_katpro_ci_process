@@ -104,6 +104,11 @@
                                     Popis Dummy produtcs
                                 </a>
                             </div>
+                            <div class="py-1">
+                                <a href="{{ route('countries.product') }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                                    Countries Products
+                                </a>
+                            </div>
                         </div>
                     </div>
 {{--                    <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.index')">--}}
@@ -122,10 +127,10 @@
 {{--                        {{ __('Dummy Products search') }}--}}
 {{--                    </x-nav-link>--}}
 
-                    <x-nav-link href="{{ route('countries.product') }}"
-                                :active="request()->routeIs('countries.product')">
-                        {{ __('Countries and Products') }}
-                    </x-nav-link>
+{{--                    <x-nav-link href="{{ route('countries.product') }}"--}}
+{{--                                :active="request()->routeIs('countries.product')">--}}
+{{--                        {{ __('Countries and Products') }}--}}
+{{--                    </x-nav-link>--}}
 
                 </div>
             </div>

@@ -7,6 +7,7 @@
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Gate;
+    use Illuminate\Support\Facades\Storage;
 
     class ProductController extends Controller
     {
@@ -39,15 +40,22 @@
         public function store(Request $request)
         {
             Gate::authorize('admin-access');
+            $file = $request->file('slika');
+
             $validated = $request->validate([
                 'naziv' => 'required|string|max:255',
                 'opis' => 'nullable|string',
                 'cijena' => 'required|numeric|min:0',
                 'kolicina' => 'required|integer|min:0',
                 'category_id' => 'required|exists:categories,id',
+                'slika' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             $validated['izvor'] = 'custom';
+
+            if($request->hasFile('slika')){
+                $validated['slika'] = $request->file('slika')->store('products', 'public');
+            }
 
             Product::create($validated);
             return redirect()->route('products.index')->with('success', 'Product uspješno kreiran.');
@@ -87,15 +95,26 @@
         public function update(Request $request, Product $product)
         {
             Gate::authorize('admin-access');
+
             $validated = $request->validate([
                 'naziv' => 'required|string|max:255',
                 'opis' => 'nullable|string',
                 'cijena' => 'required|numeric|min:0',
                 'kolicina' => 'required|integer|min:0',
                 'category_id' => 'required|exists:categories,id',
+                'slika' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
+
+            if($request->hasFile('slika')){
+                if($product->slika !== null && Storage::disk('public')->exists($product->slika))
+                {
+                    Storage::disk('public')->delete($product->slika);
+                }
+                $validated['slika'] = $request->file('slika')->store('products', 'public');
+            }
             $product->update($validated);
+
             return redirect()->route('products.index')->with('success', 'Prodact uspješno ažuriran.');
         }
 
@@ -105,7 +124,11 @@
         public function destroy(Product $product)
         {
             Gate::authorize('admin-access');
-            Product::destroy($product);
+            if($product->slika !== null && Storage::disk('public')->exists($product->slika))
+            {
+                Storage::disk('public')->delete($product->slika);
+            }
+            $product->delete();
 
             return redirect()->route('products.index')->with('success', 'Product uspješno izbrisan.');
         }

@@ -14,6 +14,7 @@
                 <form
                     action="{{ route('products.update', $product) }}"
                     method="POST"
+                    enctype="multipart/form-data"
                 >
                     @csrf
                     @method('PUT')
@@ -92,13 +93,35 @@
                             >
                             {{ $category->naziv }}
                         </option>
-                        
+
                         @endforeach
                         </select>
 
                         @error('category_id')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <x-input-label for="slika" value="Slika proizvoda" class="mb-1"/>
+                        @if($product->slika)
+                            <div class="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-4">
+                                <p class="mb-2 text-sm font-semibold text-gray-700">
+                                    Trenutna slika
+                                </p>
+                                <img src="{{ asset('storage/'.$product->slika) }}" alt="Slika proizvoda {{ $product->naziv }}" class="h-48 w-auto rounded-lg border-gray-300 object-contain shadow-sm">
+                            </div>
+                        @else
+                            <div class="mb-4 rounded-mb border border-gray-200 bg-gray-50 p-3 text-sm text-gray-700">
+                                Proizvod trenutačno nema spremljenu sliku
+                            </div>
+                        @endif
+                        <input type="file" id="slika" name="slika" accept=".jpg, .jpeg, .png, .gif" class="w-full block rounded-md border-gray-300 bg-white p-2 text-sm shadow-sm">
+                        @if($product->slika)
+                            <p class="mt-1 text-xs text-gray-500">Odabirom datoteke postojeća slika biti će zamjenjena</p>
+                        @else
+                            <p class="mt-1 text-xs text-gray-500">Dopušteni formati: JPG, JPEG, PNG, i GIF. Najveća veličina: 2 MB</p>
+                        @endif
                     </div>
 
                     <button
