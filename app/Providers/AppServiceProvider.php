@@ -21,7 +21,7 @@
          */
         public function boot(): void
         {
-            if (app()->environment('production') || app()->environment('test') || app()->environment('dev')) {
+            if (app()->environment('production') || app()->environment('test') || app()->environment('educ') ||app()->environment('dev')) {
                 URL::forceScheme('https');
             }
             Gate::define('admin-access', function ($user) {
