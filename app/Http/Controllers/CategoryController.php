@@ -32,7 +32,10 @@
             $validated = $request->validate([
                 'naziv' => 'required|string|max:255|min:3',
                 'opis' => 'nullable|string',
+                'active'=> 'nullable|boolean',
             ]);
+
+            $validated['active'] = $request->boolean('active');
             Category::create($validated);
 
             return redirect()->route('categories.index')->with('success', 'Kategorija uspješno kreirana.');
@@ -73,7 +76,9 @@
             $validated = $request->validate([
                 'naziv' => 'required|string|max:255',
                 'opis' => 'nullable|string',
+                'active'=> 'nullable|boolean',
             ]);
+            $validated['active'] = $request->boolean('active');
             $category->update($validated);
 
             return redirect()->route('categories.index')->with('success', 'Kategorija uspješno ažurirana');
