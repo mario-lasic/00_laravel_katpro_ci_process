@@ -3,7 +3,7 @@ name: Laravel CI process EDUC
 on:
   push:
     branches:
-      - dev
+      - educ
 
 jobs:
   laravel-tests:
