@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ['naziv', 'opis'];
+    protected $fillable = ['naziv', 'opis', 'active'];
+
+    protected function casts(): array
+    {
+        return [
+            'active' => 'boolean'
+        ];
+    }
 
     public function products()
     {

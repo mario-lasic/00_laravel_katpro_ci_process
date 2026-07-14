@@ -29,6 +29,7 @@
                                     <th>ID</th>
                                     <th>Naziv</th>
                                     <th>Opis</th>
+                                    <th>Aktivna</th>
                                     <th>Detalji</th>
                                     <th>Kreirana</th>
                                     <th>Ažurirana</th>
@@ -43,6 +44,7 @@
                                         <td>{{ $category->id }}</td>
                                         <td>{{ $category->naziv }}</td>
                                         <td>{{ $category->opis }}</td>
+                                        <td>{{ $category->active ? "DA" : "NE" }}</td>
                                         <td>
                                             <a href="{{ route('categories.show', $category) }}"
                                                class="icon-button icon-edit" title="Detalji">

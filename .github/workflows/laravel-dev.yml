@@ -1,4 +1,4 @@
-name: Laravel CI process
+name: Laravel CI process DEV
 
 on:
   push:
