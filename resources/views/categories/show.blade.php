@@ -31,6 +31,10 @@
                             <td>{{ $category->opis }}</td>
                         </tr>
                         <tr>
+                            <td>Aktivna</td>
+                            <td>{{ $category->active ? "DA" : "NE" }}</td>
+                        </tr>
+                        <tr>
                             <td>Kreirana</td>
                             <td>{{ $category->created_at?->format('d.m.Y H:i:s') }}</td>
                         </tr>
