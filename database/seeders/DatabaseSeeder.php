@@ -19,8 +19,8 @@
             $this->call([
                 UserSeeder::class,
                 CategorySeeder::class,
-                ProductSeeder::class,
                 CountriesSeeder::class,
+                ProductSeeder::class,
             ]);
         }
     }
