@@ -1,9 +1,9 @@
-name: Laravel CI process
+name: Laravel CI process TEST
 
 on:
   push:
     branches:
-      - dev
+      - test
 
 jobs:
   laravel-tests:
