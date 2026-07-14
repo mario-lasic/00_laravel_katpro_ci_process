@@ -20,6 +20,11 @@
                         {{ now()->format('H:i:s') }}
                     </span>
                 </span>
+                <span class="ml-10">
+                    <strong>Verzija aplikacije: </strong>
+                    <span class="footerred font-mono">{{ config('app.version') }}</span>
+                </span>
+
             </div>
 
 

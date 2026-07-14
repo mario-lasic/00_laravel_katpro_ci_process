@@ -123,6 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'timezone' => 'Europe/Zagreb'
+    'timezone' => 'Europe/Zagreb',
+    'version' => env('APP_VERSION', '1.0.0'),
 
 ];
